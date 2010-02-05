@@ -1,0 +1,60 @@
+== TO-DO list
+
+- BUG: tags defined in the layout are not accessible within pages
+
+- BUG: attribute expansion: they are expanded only once, so they don't work as expected inside loops
+
+- apply parametrizable snippets patch provided by Mario T. Lanza <mlanza(at)comcast.net>
+
+- DOC: <r:erb>: when expanding HTML generating tags like <r:link> inside <%= %> it must be evaluated as a q{ } string to avoid problems with <, >, ', " characters
+
+- attribute expansion: make expansion prefix (by default "=") configurable in "config" table of database (use a key like "extension.back-door.expansion-prefix")
+
+- DEV: switch to rspec + rcov
+
+- add an "expr" attribute to <r:ruby> tag, so it evaluates the expression but does not render the value.  For example:
+
+  <r:ruby expr="@limit = 3" />
+
+  is equal to
+
+  <r:ruby> @limit = 3; "" </r:ruby>
+
+  maybe also add a "silent=true|false" attribute so nothing is returned
+
+- <tag>s inside <r:erb> tags with ruby loops don't expand multiple times
+    - the solution is to first apply the ERB filter and then expand the result
+    - seems that this is not possible with Radius
+    - for more info refer to the <r:erb> and <r:expand> documentation
+
+- improve security
+    - setting the $SAFE variable does not seem useful
+    - Maybe also add a simple YAML file with the list of users allowed to use the tags.
+
+- implement extra tags like <r:case>, <r:each> and <r:times>
+
+- parametrized snippets:
+  "
+  I like the idea of parametrized snippets.  I hope that the core team
+considers this for future releases, i believe that the idea is simple and
+fits in the philosophy of Radiant.
+
+   I would suggest to add the parameters individually to the <r:snippet>
+tag, and to allow a body to be defined:
+
+   <r:snippet name="rounded-box" class="whatever" bg-color="blue">
+        This is a parametrized snippet...
+   </r>
+
+    The "name" attribute is reserved.  The user is free to use any other,
+and they will be passed to the snippet code, may be with a <r:param> and
+<r:body> tag:
+
+    <div class="<r:param name="class"> rounded"
+style="background-color:<r:param name="bg-color">" >
+        <r:body>
+    </div>
+
+     Backdoor 0.3.0 has a <r:tag> and <r:erb_tag> that can be used as
+parametrized snippets, but it has the known security implications.
+"

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>File: CHANGELOG</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href=".././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+  <div id="fileHeader">
+    <h1>CHANGELOG</h1>
+    <table class="header-table">
+    <tr class="top-aligned-row">
+      <td><strong>Path:</strong></td>
+      <td>CHANGELOG
+      </td>
+    </tr>
+    <tr class="top-aligned-row">
+      <td><strong>Last Update:</strong></td>
+      <td>Fri Dec 14 11:37:52 +0100 2007</td>
+    </tr>
+    </table>
+  </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <h1>Change Log</h1>
+<h3>0.4.2</h3>
+<ul>
+<li>Check that we don&#8216;t activate the extension twice, this happens in
+development environment
+
+</li>
+</ul>
+<h3>0.4.1</h3>
+<ul>
+<li>Automatically convert to string the result of evaluating tag attributes, so
+the user does not have to take care of this
+
+</li>
+</ul>
+<h3>0.4.0</h3>
+<ul>
+<li>Allow expansion of tag attributes by prepending them with the &quot;#&quot;
+symbol, read the &quot;Attribute expansion&quot; section of the README for
+more information
+
+</li>
+</ul>
+<h3>0.3.0</h3>
+<ul>
+<li>Implemented a &lt;r:else&gt; tag for both &lt;r:if&gt; and &lt;r:unless&gt;
+tags. Now it&#8216;s possible to do:
+
+<pre>
+      &lt;r:if cond=&quot;...&quot;&gt;
+              This is the if part
+              &lt;r:else&gt;
+                      And this the else part
+              &lt;/r:else&gt;
+      &lt;/r:if&gt;
+</pre>
+</li>
+<li>Implemented a &lt;r:tag&gt; and &lt;r:erb_tag&gt; tags which allow to
+define new tags easily:
+
+<pre>
+      &lt;!-- define a new tag --&gt;
+      &lt;r:erb_tag name=&quot;article&quot;&gt;
+              &lt;div class=&quot;&lt;%= tag.attr[ &quot;class&quot;] || &quot;article&quot; %&gt;&quot;&gt;
+                      &lt;div class=&quot;article-title&quot;&gt; &lt;%= tag.attr[ &quot;title&quot;] %&gt; &lt;/div&gt;
+                      &lt;div class=&quot;article-body&quot;&gt; &lt;%= tag.expand %&gt; &lt;/div&gt;
+                      &lt;div class=&quot;article-footer&quot;&gt; Posted in &lt;page/&gt; &lt;/div&gt;
+              &lt;/div&gt;
+      &lt;/r:erb&gt;
+
+      &lt;!-- use it --&gt;
+      &lt;article title=&quot;New BackDoor release&quot;&gt;
+              Blah, blah, blah
+      &lt;/article&gt;
+</pre>
+</li>
+<li>Added a &lt;r:erb:expand&gt; tag that solves a problem where tags inside
+ERB templates expand only once when used inside ruby loops
+
+</li>
+</ul>
+<h3>0.2.0</h3>
+<ul>
+<li>Implemented the &lt;r:unless&gt; tag. Thanks to Jamie Wilkinson
+&lt;jamie-list(at)tramchase.com&gt; for providing the patch.
+
+</li>
+<li>Check that tests are executed inside a Radiant application.
+
+</li>
+<li>Minor documentation clean up.
+
+</li>
+</ul>
+<h3>0.1.0</h3>
+<ul>
+<li>First release. Implemented tags &lt;r:ruby&gt;, &lt;r:erb&gt; and
+&lt;r:if&gt;.
+
+</li>
+</ul>
+
+    </div>
+
+
+   </div>
+
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+
+
+
+      
+
+
+    <!-- if method_list -->
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

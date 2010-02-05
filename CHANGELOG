@@ -1,0 +1,49 @@
+= Change Log
+
+=== 0.4.3
+* Use "=" character for attribute expansion instead of "#" to avoid conflicts with HTML anchors.  Thanks to Martin Grunskis <one.three(at)gmail.com> for the bug report and the discussion that lead to the problem.
+
+=== 0.4.2
+* Check that we don't activate the extension twice, this happens in development environment
+
+=== 0.4.1
+* Automatically convert to string the result of evaluating tag attributes, so the user does not have to take care of this
+
+=== 0.4.0
+* Allow expansion of tag attributes by prepending them with the "#" symbol, read the "Attribute expansion" section of the README for more information
+
+=== 0.3.0
+* Implemented a <r:else> tag for both <r:if> and <r:unless> tags.  Now it's possible to do: 
+
+  	<r:if cond="...">
+  		This is the if part
+		<r:else>
+			And this the else part
+		</r:else>
+	</r:if>
+
+* Implemented a <r:tag> and <r:erb_tag> tags which allow to define new tags easily:
+
+	<!-- define a new tag -->
+	<r:erb_tag name="article">
+		<div class="<%= tag.attr[ "class"] || "article" %>">
+			<div class="article-title"> <%= tag.attr[ "title"] %> </div>
+			<div class="article-body"> <%= tag.expand %> </div>
+			<div class="article-footer"> Posted in <page/> </div>
+		</div>
+	</r:erb>
+
+	<!-- use it -->
+	<article title="New BackDoor release">
+		Blah, blah, blah
+	</article>
+
+* Added a <r:erb:expand> tag that solves a problem where tags inside ERB templates expand only once when used inside ruby loops 
+
+=== 0.2.0
+* Implemented the <r:unless> tag.  Thanks to Jamie Wilkinson <jamie-list(at)tramchase.com> for providing the patch.
+* Check that tests are executed inside a Radiant application.
+* Minor documentation clean up.
+
+=== 0.1.0
+* First release.  Implemented tags <r:ruby>, <r:erb> and <r:if>.

@@ -1,0 +1,139 @@
+= Back Door, execute Ruby code directly inside Radiant templates
+
+==Intro
+
+Back door is a Radiant extension that allows executing Ruby code directly
+inside Radiant templates. It provides the following main tags: <r:ruby>, <r:erb>,
+<r:if>, <r:else>, <r:unless>, <r:tag> and <r:erb_tag>.
+
+The objective of this extension is to avoid writing Radian extensions for easy
+tasks.  If you just need some Ruby/ERB code inside templates, this extension
+is for you.  If you want to implement Radius tags, modify the admin interface or
+define some other complex behavior you should revert to writing a complete Radiant
+extension.
+
+Download::          http://backdoor.rubyforge.org/svn/tags/stable
+Docs::              http://backdoor.rubyforge.org/
+Project home::      http://rubyforge.org/projects/backdoor/
+Current version::   <%= IO.read( File.join( File.dirname( __FILE__), "VERSION")).strip %>
+Author::            aitor.name[http://aitor.name]
+
+Please discuss, report bugs and comments to the Radiant user's mailing-list[http://radiantcms.org/mailing-list]
+or contact the author directly at me(at)aitor.name.
+
+Thanks to RubyForge for hosting this project.
+
+== Usage
+
+This extension adds the following new tags:
+
+<%=
+  # extract the tag documentation directly from the source code
+  # *toDO* do a "require 'app/models/back_door_tags.rb'" and extract the defined tags from Radiant::Taggable
+  result = ""
+  File.open( "app/models/back_door_tags.rb") do |io|
+    code = io.read
+    code.scan( /#\s*(\S+)\s*desc\s+%\{\s+(.*?)\}/m) do |match|
+      tag = match[ 0]
+      doc = match[ 1].gsub( /^    /, "")    # indent it to the left
+      result += "=== <r:#{tag}>\n\n"
+      result += "#{doc}\n"
+    end
+  end
+
+  # remove the <pre> and <code> tags from the docs
+  result.gsub( /<\/?(pre|code)>/, "")
+%>
+
+== Attribute expansion
+
+Back Door allows evaluating tag's attributes as Ruby code.  If a tag's attribute starts with the "=" symbol, the rest of
+the attribute is evaluated, and the attribute's value is replaced with the evaluated value.  This works for both standard
+Radiant (Radius) tags and Back Door's own tags.
+
+As an example, consider a side-bar where we want to show first and second level pages.  But for the "news" page, we want to
+limit the number of children to 3 and add an extra link to see all news.  Without Back Door this could be implemented as:
+
+  <r:children:each>
+      <h2 class="menu-heading">
+          <r:link>
+              <r:title />
+          </r:link>
+      </h2>
+      <r:if_url matches="/news/">
+          <r:children:each limit="3" order="desc" by="published_at">
+              <h3 class="menu-subheading">
+                  <r:link>
+                      <r:title />
+                  </r:link>
+              </h3>
+          </r:children:each>
+          <h3 class="menu-subheading">
+              <r:link> More news... </r:link>
+          </h3>
+      </r:if_url>
+      <r:unless_url matches="/news/">
+          <r:children:each order="desc" by="published_at">
+              <h3 class="menu-subheading">
+                  <r:link>
+                      <r:title />
+                  </r:link>
+              </h3>
+          </r:children:each>
+      </r:unless_url>
+  </r:children:each>
+
+Clearly there is too much duplication.  With Back Door this can be rewritten as:
+
+  <r:children:each>
+      <h2 class="menu-heading">
+          <r:link>
+              <r:title />
+          </r:link>
+      </h2>
+      <r:ruby> @news = tag.locals.page.url =~ /news/; "" </r:ruby>
+      <r:children:each limit="=(@news ? 3: 1000)" order="desc" by="published_at">
+          <h3 class="menu-subheading">
+              <r:link>
+                  <r:title />
+              </r:link>
+          </h3>
+      </r:children:each>
+      <r:if cond="@news">
+          <h3 class="menu-subheading">
+              <r:link> More news... </r:link>
+          </h3>
+      </r:if>
+  </r:children:each>
+
+Note how the "limit" attribute of the <r:children:each> tag uses the "=" symbol to make it dynamic.
+
+== Security
+
+None to date.  Arbitrary Ruby code can be executed with this extension.  If you don't trust the people
+writing the pages in a Radiant site armed with this extension, simply don't use it.  See the TODO[link:files/TODO.html] file
+for more information.
+
+== License
+
+The Back Door extension is available under a MIT style license.
+
+Copyright (c) 2007 Aitor Garay-Romero <me(at)aitor.name>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.

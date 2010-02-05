@@ -1,0 +1,536 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>File: README</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href=".././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+  <div id="fileHeader">
+    <h1>README</h1>
+    <table class="header-table">
+    <tr class="top-aligned-row">
+      <td><strong>Path:</strong></td>
+      <td>README
+      </td>
+    </tr>
+    <tr class="top-aligned-row">
+      <td><strong>Last Update:</strong></td>
+      <td>Fri Dec 14 11:58:52 +0100 2007</td>
+    </tr>
+    </table>
+  </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <h1>Back Door, execute Ruby code directly inside Radiant templates</h1>
+<h2>Intro</h2>
+<p>
+Back door is a Radiant extension that allows executing Ruby code directly
+inside Radiant templates. It provides the following main tags:
+&lt;r:ruby&gt;, &lt;r:erb&gt;, &lt;r:if&gt;, &lt;r:else&gt;,
+&lt;r:unless&gt;, &lt;r:tag&gt; and &lt;r:erb_tag&gt;.
+</p>
+<p>
+The objective of this extension is to avoid writing Radian extensions for
+easy tasks. If you just need some Ruby/ERB code inside templates, this
+extension is for you. If you want to implement Radius tags, modify the
+admin interface or define some other complex behavior you should revert to
+writing a complete Radiant extension.
+</p>
+<table>
+<tr><td valign="top">Download:</td><td><a
+href="http://backdoor.rubyforge.org/svn/tags/stable">backdoor.rubyforge.org/svn/tags/stable</a>
+
+</td></tr>
+<tr><td valign="top">Docs:</td><td><a href="http://backdoor.rubyforge.org">backdoor.rubyforge.org</a>/
+
+</td></tr>
+<tr><td valign="top">Project home:</td><td><a
+href="http://rubyforge.org/projects/backdoor">rubyforge.org/projects/backdoor</a>/
+
+</td></tr>
+<tr><td valign="top">Current version:</td><td>0.4.2
+
+</td></tr>
+<tr><td valign="top">Author:</td><td><a href="http://aitor.name">aitor.name</a>
+
+</td></tr>
+</table>
+<p>
+Please discuss, report bugs and comments to the Radiant user&#8216;s <a
+href="http://radiantcms.org/mailing-list">mailing-list</a> or contact the
+author directly at me(at)aitor.name.
+</p>
+<p>
+Thanks to RubyForge for hosting this project.
+</p>
+<h2>Usage</h2>
+<p>
+This extension adds the following new tags:
+</p>
+<h3>&lt;r:ruby&gt;</h3>
+<p>
+Executes the content of the tag body as Ruby code and renders the returned
+value.
+</p>
+<p>
+*Usage:*
+</p>
+<pre>
+   &lt;r:ruby&gt; [ruby code] &lt;/r:ruby&gt;
+</pre>
+<p>
+*Example:*
+</p>
+<pre>
+   With this fine extension you have access to all this information: &lt;r:ruby&gt; self.inspect &lt;/r:ruby&gt;
+   This machine identifies itself as &lt;r:ruby&gt; `uname -a` &lt;/r:ruby&gt;
+</pre>
+<h3>&lt;r:erb&gt;</h3>
+<p>
+Executes the content of the tag body as ERB code and renders the returned
+value.
+</p>
+<p>
+*Usage:*
+</p>
+<pre>
+   &lt;r:erb&gt; [ERB template] &lt;/r:erb&gt;
+</pre>
+<p>
+*Example:*
+</p>
+<pre>
+  &lt;r:erb&gt;
+    &lt;table&gt;
+      &lt;tr&gt;
+        &lt;th&gt;name&lt;/th&gt; &lt;th&gt;password&lt;/th&gt; &lt;th&gt;uid&lt;/th&gt; &lt;th&gt;gid&lt;/th&gt; &lt;th&gt;class&lt;/th&gt; &lt;th&gt;home_dir&lt;/th&gt; &lt;th&gt;shell&lt;/th&gt;
+      &lt;/tr&gt;
+      &lt;%  File.open( &quot;/etc/passwd&quot;) do |io|
+            while line = io.gets
+              next if line =~ /^\s*#/
+              fields = line.split( &quot;:&quot;)
+      %&gt;
+              &lt;tr&gt;
+               &lt;% fields.each do |field| %&gt;
+                &lt;td&gt; &lt;%= field %&gt; &lt;/td&gt;
+              &lt;% end %&gt;
+              &lt;/tr&gt;
+      &lt;%    end
+          end
+      %&gt;
+    &lt;/table&gt;
+  &lt;/r:erb&gt;
+</pre>
+<p>
+*Caveats:*
+</p>
+<p>
+When using ruby looping constructs inside a ERB template, the Radius tags
+present in the template get expanded only once, and then
+&quot;repeated&quot; multiple times by the Ruby code. For example, the
+following code:
+</p>
+<pre>
+  &lt;r:erb&gt;
+    &lt;% 5.times do %&gt;
+      &lt;%= &lt;r:cycle values=&quot;1, 2, 3, 4, 5&quot;/&gt; %&gt;
+    &lt;% end %&gt;
+  &lt;/r:erb&gt;
+</pre>
+<p>
+returns &quot;11111&quot;, though intuitively it should return
+&quot;12345&quot; (ignoring whitespace). This is because the
+&lt;r:cycle&gt; tag gets expanded only once.
+</p>
+<p>
+Nearly always this is irrelevant, since Radiant tags are all side effect
+free, that is, they always return the same value when called multiple times
+in the same context. Notable exceptions are the &lt;r:cycle&gt; and
+&lt;r:random&gt; tags.
+</p>
+<p>
+For the case of tags with side effects, use the &lt;r:expand&gt; tag as
+documented in the description for that tag.
+</p>
+<h3>&lt;r:expand&gt;</h3>
+<p>
+When used inside an &quot;r:erb&quot; tag, it expands the tag named in the
+&quot;tag&quot; attribute with the given attributes.
+</p>
+<p>
+This tag avoids the &quot;tag only expands once inside ruby loops&quot;
+problem described in the &quot;r:erb&quot; tag. It takes a required
+&quot;tag&quot; attribute that identifies an existing tag, and expands that
+tag passing it the rest of attributes.
+</p>
+<p>
+NOTE that this tag must be used inside an ERB &lt;%= %&gt; construct.
+</p>
+<p>
+*Usage:&quot;
+</p>
+<pre>
+   &lt;r:expand tag=&quot;tag-name&quot; [ tag-name-attribute=&quot;value&quot;]* /&gt;
+</pre>
+<p>
+*Example:&quot;
+</p>
+<pre>
+  &lt;r:erb&gt;
+    &lt;% &lt;r:cycle values=&quot;1, 2, 3, 4, 5&quot; reset=&quot;true&quot;/&gt; %&gt;
+    &lt;% 5.times do %&gt;
+      &lt;%=
+      &lt;r:expand tag=&quot;cycle&quot; values=&quot;1, 2, 3, 4, 5&quot;/&gt;
+      %&gt;
+    &lt;% end %&gt;
+  &lt;/r:erb&gt;
+</pre>
+<p>
+renders &quot;23451&quot; (ignoring whitespace)
+</p>
+<h3>&lt;r:if&gt;</h3>
+<p>
+Renders the tag body if the given Ruby expression evaluates to true. If not
+it renders an inner &quot;r:else&quot; tag, if present. Note that there are
+some caveats regarding the &quot;r:else&quot; tag, look the description of
+if for more information.
+</p>
+<p>
+*Usage:*
+</p>
+<pre>
+   &lt;r:if cond=&quot;[ruby expression]&quot;&gt; [HTML content] &lt;/r:if&gt;
+   &lt;r:if cond=&quot;[ruby expression]&quot;&gt; [HTML content] &lt;r:else&gt; [HTML content] &lt;/r:else&gt; &lt;/r:if&gt;
+</pre>
+<p>
+*Example:*
+</p>
+<pre>
+  &lt;r:if cond=&quot;request.env[ 'HTTP_USER_AGENT'] =~ /MSIE/&quot;&gt;
+    &lt;!-- Internet Explorer needs some ugly hacks to render PNG images with transparency --&gt;
+    &lt;div id=&quot;logo&quot; style=&quot;filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=\'/images/logo.png\',sizingMethod=\'scale\');&quot;&gt;&lt;/div&gt;
+    &lt;r:else&gt;
+      &lt;!-- the rest of browsers just make it rigth --&gt;
+      &lt;img src=&quot;/images/logo.png&quot; id=&quot;logo&quot; alt=&quot;Logo&quot;/&gt;
+    &lt;/r:else&gt;
+  &lt;/r:if&gt;
+</pre>
+<p>
+*Caveats:*
+</p>
+<p>
+There are two caveats with the &quot;r:if/unless&quot; and
+&quot;r:else&quot; tags (used &quot;r:if&quot; as example, but equally
+applicable to &quot;r:unless&quot;):
+</p>
+<ul>
+<li>to allow the expansion of an &quot;r:else&quot; part inside a
+&quot;r:if&quot; tag, the containing &quot;r:if&quot; tag must be expanded
+even if the condition of the &quot;r:if&quot; tag evaluates to false. In
+this case, the body of the &quot;r:if&quot; tag is ignored. This is not a
+problem unless the body of the &quot;r:if&quot; tag has &quot;side
+effects&quot;:
+
+<pre>
+  &lt;r:ruby&gt;
+    @counter = 0
+    &quot;&quot;
+  &lt;/r:ruby&gt;
+  &lt;r:if cond=&quot;false&quot;&gt;
+    This text is evaluated and ignored, but the following &quot;ruby&quot; tag has a side effect that affects the &quot;else&quot; tag
+    &lt;r:ruby&gt; @counter += 1 &lt;/r:ruby&gt;
+    &lt;r:else&gt; &lt;r:ruby&gt; @counter &lt;/r:ruby&gt; &lt;/r:else&gt;
+  &lt;/r:if&gt;
+</pre>
+</li>
+<li>the rendered value of the &quot;r:if&quot; tag contains also any data after
+an &quot;r:else&quot; tag:
+
+<pre>
+  &lt;r:if cond=&quot;true&quot;&gt;
+    Hello
+    &lt;r:else&gt; Hello Radiant! &lt;/r:else&gt;
+    world!
+  &lt;/r:if&gt;
+</pre>
+<p>
+evaluates to &quot;Hello world!&quot; (ignoring whitespace)
+</p>
+</li>
+</ul>
+<h3>&lt;r:unless&gt;</h3>
+<p>
+The inverse of the &quot;r:if&quot; tag. Refer to the description of the
+&quot;r:if&quot; tag for complete documentation.
+</p>
+<h3>&lt;r:else&gt;</h3>
+<p>
+Specifies the &quot;else&quot; part for &quot;r:if&quot; and
+&quot;r:unless&quot;. Refer to the description of the &quot;r:if&quot; tag
+for complete documentation.
+</p>
+<h3>&lt;r:tag&gt;</h3>
+<p>
+Defines a new tag, which can subsequently be used as a normal Radius tag.
+It can be seen as a programmable and parametrized snippet.
+</p>
+<p>
+The new tag receives the tag context with the standard name &quot;tag&quot;
+(see the example below). Note that this tag must be rendered by Radiant
+before the tag it defines is used. This typically means that this tag must
+be used early in a page layout.
+</p>
+<p>
+*Usage:*
+</p>
+<pre>
+  &lt;!-- define a new tag --&gt;
+  &lt;r:tag name=&quot;tag-name&quot;&gt;
+    [Ruby code]
+  &lt;/r:tag&gt;
+
+  &lt;!-- use the new defined tag --&gt;
+  &lt;r:tag-name [params]&gt;
+    [content]
+  &lt;/r:tag-name&gt;
+</pre>
+<p>
+*Example:*
+</p>
+<pre>
+  &lt;!-- define a new tag --&gt;
+  &lt;r:tag name=&quot;originating_ip&quot;&gt;
+    @request.remote_ip
+  &lt;/r:tag&gt;
+
+  &lt;!-- use it --&gt;
+  Article posted from IP &lt;r:originating_ip /&gt;
+</pre>
+<h3>&lt;r:erb_tag&gt;</h3>
+<p>
+Same functionality as the &quot;tag&quot; tag but the body of the tag is
+interpreted as ERB code. Handy for heavy parametrized templating.
+</p>
+<p>
+*Usage:*
+</p>
+<pre>
+  &lt;!-- define a new tag --&gt;
+  &lt;r:tag name=&quot;tag-name&quot;&gt;
+    [Ruby code]
+  &lt;/r:tag&gt;
+
+  &lt;!-- use the new defined tag --&gt;
+  &lt;r:tag-name [params]&gt;
+    [content]
+  &lt;/r:tag-name&gt;
+</pre>
+<p>
+*Example:*
+</p>
+<pre>
+  &lt;!-- define a new tag --&gt;
+  &lt;r:erb_tag name=&quot;article&quot;&gt;
+    &lt;div class=&quot;&lt;%= tag.attr[ &quot;class&quot;] || &quot;article&quot; %&gt;&quot;&gt;
+      &lt;div class=&quot;article-title&quot;&gt; &lt;%= tag.attr[ &quot;title&quot;] %&gt; &lt;/div&gt;
+      &lt;div class=&quot;article-body&quot;&gt; &lt;%= tag.expand %&gt; &lt;/div&gt;
+      &lt;div class=&quot;article-footer&quot;&gt; Posted in &lt;page/&gt; &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/r:erb&gt;
+
+  &lt;!-- use it --&gt;
+  &lt;article title=&quot;New BackDoor release&quot;&gt;
+    Blah, blah, blah
+  &lt;/article&gt;
+</pre>
+<h2>Attribute expansion</h2>
+<p>
+Back Door allows evaluating tag&#8216;s attributes as Ruby code. If a
+tag&#8216;s attribute starts with the &quot;#&quot; symbol, the rest of the
+attribute is evaluated, and the attribute&#8216;s value is replaced with
+the evaluated value. This works for both standard Radiant (Radius) tags and
+Back Door&#8216;s own tags.
+</p>
+<p>
+As an example, consider a side-bar where we want to show first and second
+level pages. But for the &quot;news&quot; page, we want to limit the number
+of children to 3 and add an extra link to see all news. Without Back Door
+this could be implemented as:
+</p>
+<pre>
+  &lt;r:children:each&gt;
+      &lt;h2 class=&quot;menu-heading&quot;&gt;
+          &lt;r:link&gt;
+              &lt;r:title /&gt;
+          &lt;/r:link&gt;
+      &lt;/h2&gt;
+      &lt;r:if_url matches=&quot;/news/&quot;&gt;
+          &lt;r:children:each limit=&quot;3&quot; order=&quot;desc&quot; by=&quot;published_at&quot;&gt;
+              &lt;h3 class=&quot;menu-subheading&quot;&gt;
+                  &lt;r:link&gt;
+                      &lt;r:title /&gt;
+                  &lt;/r:link&gt;
+              &lt;/h3&gt;
+          &lt;/r:children:each&gt;
+          &lt;h3 class=&quot;menu-subheading&quot;&gt;
+              &lt;r:link&gt; More news... &lt;/r:link&gt;
+          &lt;/h3&gt;
+      &lt;/r:if_url&gt;
+      &lt;r:unless_url matches=&quot;/news/&quot;&gt;
+          &lt;r:children:each order=&quot;desc&quot; by=&quot;published_at&quot;&gt;
+              &lt;h3 class=&quot;menu-subheading&quot;&gt;
+                  &lt;r:link&gt;
+                      &lt;r:title /&gt;
+                  &lt;/r:link&gt;
+              &lt;/h3&gt;
+          &lt;/r:children:each&gt;
+      &lt;/r:unless_url&gt;
+  &lt;/r:children:each&gt;
+</pre>
+<p>
+Clearly there is too much duplication. With Back Door this can be rewritten
+as:
+</p>
+<pre>
+  &lt;r:children:each&gt;
+      &lt;h2 class=&quot;menu-heading&quot;&gt;
+          &lt;r:link&gt;
+              &lt;r:title /&gt;
+          &lt;/r:link&gt;
+      &lt;/h2&gt;
+      &lt;r:ruby&gt; @news = tag.locals.page.url =~ /news/; &quot;&quot; &lt;/r:ruby&gt;
+      &lt;r:children:each limit=&quot;#@news ? 3: 1000&quot; order=&quot;desc&quot; by=&quot;published_at&quot;&gt;
+          &lt;h3 class=&quot;menu-subheading&quot;&gt;
+              &lt;r:link&gt;
+                  &lt;r:title /&gt;
+              &lt;/r:link&gt;
+          &lt;/h3&gt;
+      &lt;/r:children:each&gt;
+      &lt;r:if cond=&quot;@news&quot;&gt;
+          &lt;h3 class=&quot;menu-subheading&quot;&gt;
+              &lt;r:link&gt; More news... &lt;/r:link&gt;
+          &lt;/h3&gt;
+      &lt;/r:if&gt;
+  &lt;/r:children:each&gt;
+</pre>
+<p>
+Note how the &quot;limit&quot; attribute of the &lt;r:children:each&gt; tag
+uses the &quot;#&quot; symbol to make it dynamic.
+</p>
+<h2>Security</h2>
+<p>
+None to date. Arbitrary Ruby code can be executed with this extension. If
+you don&#8216;t trust the people writing the pages in a Radiant site armed
+with this extension, simply don&#8216;t use it. See the <a
+href="TODO.html">TODO</a> file for more information.
+</p>
+<h2>License</h2>
+<p>
+The Back Door extension is available under a MIT style license.
+</p>
+<p>
+Copyright (c) 2007 Aitor Garay-Romero &lt;me(at)aitor.name&gt;
+</p>
+<p>
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the
+&quot;Software&quot;), to deal in the Software without restriction,
+including without limitation the rights to use, copy, modify, merge,
+publish, distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to the
+following conditions:
+</p>
+<p>
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+</p>
+<p>
+THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+USE OR OTHER DEALINGS IN THE SOFTWARE.
+</p>
+
+    </div>
+
+
+   </div>
+
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+
+
+
+      
+
+
+    <!-- if method_list -->
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>
