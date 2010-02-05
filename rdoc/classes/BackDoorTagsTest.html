@@ -96,6 +96,7 @@
       <div class="name-list">
       <a href="#M000001">setup</a>&nbsp;&nbsp;
       <a href="#M000007">test_attribute_expansion</a>&nbsp;&nbsp;
+      <a href="#M000008">test_attribute_expansion_in_a_loop</a>&nbsp;&nbsp;
       <a href="#M000003">test_erb_tag</a>&nbsp;&nbsp;
       <a href="#M000004">test_if_tag</a>&nbsp;&nbsp;
       <a href="#M000002">test_ruby_tag</a>&nbsp;&nbsp;
@@ -162,15 +163,48 @@
      <span class="ruby-comment cmt"># File test/unit/back_door_tags_test.rb, line 119</span>
 119:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">test_attribute_expansion</span>
 120:     <span class="ruby-identifier">assert_render_match</span> <span class="ruby-regexp re">/.*?(#2).*?(id-4)/</span>, <span class="ruby-value str">%q{
-121:       &lt;r:link anchor=&quot;#(1+1)&quot; id='#&quot;id-#{(2+2)}&quot;' /&gt;
+121:       &lt;r:link anchor=&quot;=(1+1)&quot; id='=&quot;id-#{(2+2)}&quot;' /&gt;
 122:     }</span>
 123:     <span class="ruby-identifier">assert_render_match</span> <span class="ruby-regexp re">/\s+(\S+)\s+(\1)/</span>, <span class="ruby-value str">%q{
 124:       &lt;r:ruby&gt; self.to_s &lt;/r:ruby&gt;
-125:       &lt;r:ruby attr=&quot;#self.to_s&quot;&gt;
+125:       &lt;r:ruby attr=&quot;=self.to_s&quot;&gt;
 126:         tag.attr[ &quot;attr&quot;]
 127:       &lt;/r:ruby&gt;
 128:     }</span>
-129:   <span class="ruby-keyword kw">end</span>
+129:     <span class="ruby-comment cmt"># check that old expansion prefix does not work now</span>
+130:     <span class="ruby-identifier">assert_render_match</span> <span class="ruby-regexp re">/#\(1\+1\)/</span>, <span class="ruby-value str">%q{
+131:       &lt;r:link anchor=&quot;#(1+1)&quot; /&gt;
+132:     }</span>
+133:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000008" class="method-detail">
+        <a name="M000008"></a>
+
+        <div class="method-heading">
+          <a href="#M000008" class="method-signature">
+          <span class="method-name">test_attribute_expansion_in_a_loop</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000008-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000008-source">
+<pre>
+     <span class="ruby-comment cmt"># File test/unit/back_door_tags_test.rb, line 135</span>
+135:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">test_attribute_expansion_in_a_loop</span>
+136:     <span class="ruby-identifier">assert_render_match</span> <span class="ruby-regexp re">/testtest/</span>, <span class="ruby-value str">%q{
+137:       &lt;r:ruby&gt; @counter = 0; &quot;&quot; &lt;/r:ruby&gt;
+138:       &lt;r:children:each&gt;
+139:         &lt;r:link id=&quot;=@counter&quot; /&gt;
+140:         &lt;r:ruby&gt; @counter +=1; &quot;&quot; &lt;/r:ruby&gt;
+141:       &lt;/r:children:each&gt;
+142:     }</span>
+143:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -254,15 +288,15 @@
 67: 
 68:     <span class="ruby-comment cmt"># side effects</span>
 69:     <span class="ruby-identifier">assert_render_match</span> <span class="ruby-regexp re">/\s*1\s*/</span>, <span class="ruby-value str">%q{
-70:             &lt;r:ruby&gt;
-71:                 @counter = 0
-72:                 &quot;&quot;
-73:             &lt;/r:ruby&gt;
-74:             &lt;r:if cond=&quot;false&quot;&gt;
-75:                 This text is evaluated and igored, but the following &quot;ruby&quot; tag has a side effect that affects the &quot;else&quot; tag
-76:                 &lt;r:ruby&gt; @counter += 1 &lt;/r:ruby&gt;
-77:                 &lt;r:else&gt; &lt;r:ruby&gt; @counter &lt;/r:ruby&gt; &lt;/r:else&gt;
-78:             &lt;/r:if&gt;
+70:       &lt;r:ruby&gt;
+71:         @counter = 0
+72:         &quot;&quot;
+73:       &lt;/r:ruby&gt;
+74:       &lt;r:if cond=&quot;false&quot;&gt;
+75:         This text is evaluated and igored, but the following &quot;ruby&quot; tag has a side effect that affects the &quot;else&quot; tag
+76:         &lt;r:ruby&gt; @counter += 1 &lt;/r:ruby&gt;
+77:         &lt;r:else&gt; &lt;r:ruby&gt; @counter &lt;/r:ruby&gt; &lt;/r:else&gt;
+78:       &lt;/r:if&gt;
 79:     }</span>
 80:   <span class="ruby-keyword kw">end</span>
 </pre>

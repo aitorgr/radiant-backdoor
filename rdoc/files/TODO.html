@@ -56,7 +56,7 @@
     </tr>
     <tr class="top-aligned-row">
       <td><strong>Last Update:</strong></td>
-      <td>Wed Dec 12 13:07:03 +0100 2007</td>
+      <td>Wed Mar 12 20:55:11 +0100 2008</td>
     </tr>
     </table>
   </div>
@@ -71,6 +71,30 @@
     <div id="description">
       <h2>TO-DO list</h2>
 <ul>
+<li>BUG: tags defined in the layout are not accessible within pages
+
+</li>
+<li>BUG: attribute expansion: they are expanded only once, so they don&#8216;t
+work as expected inside loops
+
+</li>
+<li>apply parametrizable snippets patch provided by Mario T. Lanza
+&lt;mlanza(at)comcast.net&gt;
+
+</li>
+<li>DOC: &lt;r:erb&gt;: when expanding HTML generating tags like &lt;r:link&gt;
+inside &lt;%= %&gt; it must be evaluated as a q{ } string to avoid problems
+with &lt;, &gt;, &#8217;, &quot; characters
+
+</li>
+<li>attribute expansion: make expansion prefix (by default &quot;=&quot;)
+configurable in &quot;config&quot; table of database (use a key like
+&quot;extension.back-door.expansion-prefix&quot;)
+
+</li>
+<li>DEV: switch to rspec + rcov
+
+</li>
 <li>add an &quot;expr&quot; attribute to &lt;r:ruby&gt; tag, so it evaluates
 the expression but does not render the value. For example:
 
@@ -82,6 +106,10 @@ is equal to
 </p>
 <p>
 &lt;r:ruby&gt; @limit = 3; &quot;&quot; &lt;/r:ruby&gt;
+</p>
+<p>
+maybe also add a &quot;silent=true|false&quot; attribute so nothing is
+returned
 </p>
 </li>
 <li>&lt;tag&gt;s inside &lt;r:erb&gt; tags with ruby loops don&#8216;t expand
@@ -100,10 +128,52 @@ multiple times
   - Maybe also add a simple YAML file with the list of users allowed to use the tags.
 </pre>
 </li>
-<li>implement extra tags like &lt;r:case&gt; and &lt;r:each&gt;
+<li>implement extra tags like &lt;r:case&gt;, &lt;r:each&gt; and
+&lt;r:times&gt;
+
+</li>
+<li>parametrized snippets: &quot; I like the idea of parametrized snippets. I
+hope that the core team
 
 </li>
 </ul>
+<p>
+considers this for future releases, i believe that the idea is simple and
+fits in the philosophy of Radiant.
+</p>
+<pre>
+   I would suggest to add the parameters individually to the &lt;r:snippet&gt;
+</pre>
+<p>
+tag, and to allow a body to be defined:
+</p>
+<pre>
+   &lt;r:snippet name=&quot;rounded-box&quot; class=&quot;whatever&quot; bg-color=&quot;blue&quot;&gt;
+        This is a parametrized snippet...
+   &lt;/r&gt;
+
+    The &quot;name&quot; attribute is reserved.  The user is free to use any other,
+</pre>
+<p>
+and they will be passed to the snippet code, may be with a &lt;r:param&gt;
+and &lt;r:body&gt; tag:
+</p>
+<pre>
+    &lt;div class=&quot;&lt;r:param name=&quot;class&quot;&gt; rounded&quot;
+</pre>
+<p>
+style=&quot;background-color:&lt;r:param
+name=&quot;bg-color&quot;&gt;&quot; &gt;
+</p>
+<pre>
+        &lt;r:body&gt;
+    &lt;/div&gt;
+
+     Backdoor 0.3.0 has a &lt;r:tag&gt; and &lt;r:erb_tag&gt; that can be used as
+</pre>
+<p>
+parametrized snippets, but it has the known security implications. &quot;
+</p>
 
     </div>
 

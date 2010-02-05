@@ -80,7 +80,7 @@
       <h3 class="section-bar">Methods</h3>
 
       <div class="name-list">
-      <a href="#M000011">attr</a>&nbsp;&nbsp;
+      <a href="#M000012">attr</a>&nbsp;&nbsp;
       </div>
     </div>
 
@@ -102,6 +102,11 @@
           <td>=</td>
           <td class="context-item-value">:@backdoor_processed</td>
         </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">EXPANSION_PREFIX</td>
+          <td>=</td>
+          <td class="context-item-value">&quot;=&quot;</td>
+        </tr>
         </table>
       </div>
     </div>
@@ -115,31 +120,31 @@
     <div id="methods">
       <h3 class="section-bar">Public Instance methods</h3>
 
-      <div id="method-M000011" class="method-detail">
-        <a name="M000011"></a>
+      <div id="method-M000012" class="method-detail">
+        <a name="M000012"></a>
 
         <div class="method-heading">
-          <a href="#M000011" class="method-signature">
+          <a href="#M000012" class="method-signature">
           <span class="method-name">attr</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000011-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000011-source">
+            onclick="toggleCode('M000012-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000012-source">
 <pre>
-    <span class="ruby-comment cmt"># File lib/back_door.rb, line 5</span>
- 5:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">attr</span>
- 6:     <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">attributes</span>.<span class="ruby-identifier">instance_variable_get</span> <span class="ruby-constant">FLAG_ATTRIBUTE</span>
- 7:       <span class="ruby-identifier">attributes</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span>,<span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
- 8:         <span class="ruby-comment cmt"># *toDO* if we use &quot;locals&quot; instead of &quot;globals&quot; in &quot;globals.page.instance_eval&quot;, in &lt;r:children:each&gt; &quot;self&quot; is different from outter scope, why?</span>
- 9:         <span class="ruby-identifier">attributes</span>[ <span class="ruby-identifier">key</span>] = <span class="ruby-identifier">globals</span>.<span class="ruby-identifier">page</span>.<span class="ruby-identifier">instance_eval</span>( <span class="ruby-identifier">value</span>[ <span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>]).<span class="ruby-identifier">to_s</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">value</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">value</span>[ <span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-value">0</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;#&quot;</span>
-10:       <span class="ruby-keyword kw">end</span>
-11:       <span class="ruby-identifier">attributes</span>.<span class="ruby-identifier">instance_variable_set</span> <span class="ruby-constant">FLAG_ATTRIBUTE</span>, <span class="ruby-keyword kw">true</span>
-12:     <span class="ruby-keyword kw">end</span>
-13:     <span class="ruby-identifier">attributes</span>
-14:   <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File lib/back_door.rb, line 6</span>
+ 6:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">attr</span>
+ 7:     <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">attributes</span>.<span class="ruby-identifier">instance_variable_get</span> <span class="ruby-constant">FLAG_ATTRIBUTE</span>
+ 8:       <span class="ruby-identifier">attributes</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span>,<span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
+ 9:         <span class="ruby-comment cmt"># *toDO* if we use &quot;locals&quot; instead of &quot;globals&quot; in &quot;globals.page.instance_eval&quot;, in &lt;r:children:each&gt; &quot;self&quot; is different from outter scope, why?</span>
+10:         <span class="ruby-identifier">attributes</span>[ <span class="ruby-identifier">key</span>] = <span class="ruby-identifier">globals</span>.<span class="ruby-identifier">page</span>.<span class="ruby-identifier">instance_eval</span>( <span class="ruby-identifier">value</span>[ <span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>]).<span class="ruby-identifier">to_s</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">value</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">value</span>[ <span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-value">0</span>] <span class="ruby-operator">==</span> <span class="ruby-constant">EXPANSION_PREFIX</span>
+11:       <span class="ruby-keyword kw">end</span>
+12:       <span class="ruby-identifier">attributes</span>.<span class="ruby-identifier">instance_variable_set</span> <span class="ruby-constant">FLAG_ATTRIBUTE</span>, <span class="ruby-keyword kw">true</span>
+13:     <span class="ruby-keyword kw">end</span>
+14:     <span class="ruby-identifier">attributes</span>
+15:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>

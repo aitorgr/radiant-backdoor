@@ -12,9 +12,9 @@ is for you.  If you want to implement Radius tags, modify the admin interface or
 define some other complex behavior you should revert to writing a complete Radiant
 extension.
 
-Download::          http://backdoor.rubyforge.org/svn/tags/stable
-Docs::              http://backdoor.rubyforge.org/
-Project home::      http://rubyforge.org/projects/backdoor/
+Download::          git://github.com/aitorgr/radiant-backdoor.git
+
+Project home::      http://github.com/aitorgr/radiant-backdoor
 Current version::   0.4.2
 Author::            aitor.name[http://aitor.name]
 
@@ -261,7 +261,7 @@ Same functionality as the "tag" tag but the body of the tag is interpreted as ER
 
 == Attribute expansion
 
-Back Door allows evaluating tag's attributes as Ruby code.  If a tag's attribute starts with the "#" symbol, the rest of
+Back Door allows evaluating tag's attributes as Ruby code.  If a tag's attribute starts with the "=" symbol, the rest of
 the attribute is evaluated, and the attribute's value is replaced with the evaluated value.  This works for both standard
 Radiant (Radius) tags and Back Door's own tags.
 
@@ -306,7 +306,7 @@ Clearly there is too much duplication.  With Back Door this can be rewritten as:
           </r:link>
       </h2>
       <r:ruby> @news = tag.locals.page.url =~ /news/; "" </r:ruby>
-      <r:children:each limit="#@news ? 3: 1000" order="desc" by="published_at">
+      <r:children:each limit="=(@news ? 3: 1000)" order="desc" by="published_at">
           <h3 class="menu-subheading">
               <r:link>
                   <r:title />
@@ -320,7 +320,7 @@ Clearly there is too much duplication.  With Back Door this can be rewritten as:
       </r:if>
   </r:children:each>
 
-Note how the "limit" attribute of the <r:children:each> tag uses the "#" symbol to make it dynamic.
+Note how the "limit" attribute of the <r:children:each> tag uses the "=" symbol to make it dynamic.
 
 == Security
 

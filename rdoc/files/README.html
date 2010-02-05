@@ -56,7 +56,7 @@
     </tr>
     <tr class="top-aligned-row">
       <td><strong>Last Update:</strong></td>
-      <td>Fri Dec 14 11:58:52 +0100 2007</td>
+      <td>Fri Feb 05 11:43:24 +0100 2010</td>
     </tr>
     </table>
   </div>
@@ -85,15 +85,11 @@ admin interface or define some other complex behavior you should revert to
 writing a complete Radiant extension.
 </p>
 <table>
-<tr><td valign="top">Download:</td><td><a
-href="http://backdoor.rubyforge.org/svn/tags/stable">backdoor.rubyforge.org/svn/tags/stable</a>
-
-</td></tr>
-<tr><td valign="top">Docs:</td><td><a href="http://backdoor.rubyforge.org">backdoor.rubyforge.org</a>/
+<tr><td valign="top">Download:</td><td>git://github.com/aitorgr/radiant-backdoor.git
 
 </td></tr>
 <tr><td valign="top">Project home:</td><td><a
-href="http://rubyforge.org/projects/backdoor">rubyforge.org/projects/backdoor</a>/
+href="http://github.com/aitorgr/radiant-backdoor">github.com/aitorgr/radiant-backdoor</a>
 
 </td></tr>
 <tr><td valign="top">Current version:</td><td>0.4.2
@@ -394,7 +390,7 @@ interpreted as ERB code. Handy for heavy parametrized templating.
 <h2>Attribute expansion</h2>
 <p>
 Back Door allows evaluating tag&#8216;s attributes as Ruby code. If a
-tag&#8216;s attribute starts with the &quot;#&quot; symbol, the rest of the
+tag&#8216;s attribute starts with the &quot;=&quot; symbol, the rest of the
 attribute is evaluated, and the attribute&#8216;s value is replaced with
 the evaluated value. This works for both standard Radiant (Radius) tags and
 Back Door&#8216;s own tags.
@@ -447,7 +443,7 @@ as:
           &lt;/r:link&gt;
       &lt;/h2&gt;
       &lt;r:ruby&gt; @news = tag.locals.page.url =~ /news/; &quot;&quot; &lt;/r:ruby&gt;
-      &lt;r:children:each limit=&quot;#@news ? 3: 1000&quot; order=&quot;desc&quot; by=&quot;published_at&quot;&gt;
+      &lt;r:children:each limit=&quot;=(@news ? 3: 1000)&quot; order=&quot;desc&quot; by=&quot;published_at&quot;&gt;
           &lt;h3 class=&quot;menu-subheading&quot;&gt;
               &lt;r:link&gt;
                   &lt;r:title /&gt;
@@ -463,7 +459,7 @@ as:
 </pre>
 <p>
 Note how the &quot;limit&quot; attribute of the &lt;r:children:each&gt; tag
-uses the &quot;#&quot; symbol to make it dynamic.
+uses the &quot;=&quot; symbol to make it dynamic.
 </p>
 <h2>Security</h2>
 <p>
